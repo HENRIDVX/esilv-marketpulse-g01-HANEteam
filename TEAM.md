@@ -14,7 +14,7 @@ Copy this file to `TEAM.md` in your team repository and complete it before start
 |---|---|
 | DAVROUX Henri | @HENRIDVX |
 | BOUZGUENDA Adli | @adlib1805-blip |
-| Student 3 | @github-user-3 |
+| Bejjani Elias | @eliasbejj|
 | PIQUET Nicolas| @NicolasPiquet |
 Add a fourth row only if your team has four members.
 
