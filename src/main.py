@@ -55,7 +55,7 @@ def main():
     print("Observations")
     print(f"{instrument['ticker']}: {len(instrument_prices)}")
     print(f"{benchmark['ticker']}: {len(benchmark_prices)}")
-
+    print(f"Market       : {market['market']}")
 
 if __name__ == "__main__":
     main()
