@@ -1,1 +1,42 @@
+git config user.name : DAVROUX
+git config user.email : davrouxh@gmail.com
+git status :
+ On branch main
+ Your branch is up to date with 'origin/main'.
+Changes not staged for commit:
+ (use "git add <file>..." to update what will be committed)
+ (use "git restore <file>..." to discard changes in working directory)
+ modified: src/main.py
+no changes added to commit (use "git add" and/or "git commit -a")
+git diff : (identique à mon message précédent, index 884b045..0e58dbf)
+git add src/main.py : (rien ne s'affiche)
+git status :
+ On branch main
+ Your branch is up to date with 'origin/main'.
+Changes to be committed:
+ (use "git restore --staged <file>..." to unstage)
+ modified: src/main.py
+git diff --staged : (identique à git diff)
+python src/main.py : (identique à mon message précédent)
+git commit -m "refactor: reuse market summary display" :
+ [main <hash>] refactor: reuse market summary display
+ 1 file changed, 23 insertions(+), 14 deletions(-)
+git log --oneline :
+ <hash> (HEAD -> main) refactor: reuse market summary display
+ <hash> (origin/main, origin/HEAD) <dernier commit de ton équipe>
+ <hash> Initial starter
+git show HEAD :
+ commit <hash complet> (HEAD -> main)
+ Author: DAVROUX davrouxh@gmail.com
+ Date: Fri Nov 13 13:32:47 2026 +0000
+
+
+Remarque de l'élève : commit enregistré à 13h32 alors que fait à 14h32 heure française car commit à l’heure anglaise GMT+0
+
+
+diff --git a/src/main.py b/src/main.py
+ index 884b045..0e58dbf 100644
+ 
+(puis le même diff que git diff)
+
 
