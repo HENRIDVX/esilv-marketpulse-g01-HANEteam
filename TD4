@@ -1,0 +1,67 @@
+git branch
+* feature/display-observation-dates
+  henri-davroux
+  main
+
+git diff henri-davroux..feature/display-observation-dates
++def get_first_date(prices):
++    return prices[0]["date"]
++
++def get_last_date(prices):
++    return prices[-1]["date"]
++
++    print(f"First date   : {get_first_date(prices)}")
++    print(f"Last date    : {get_last_date(prices)}")
+
+git switch henri-davroux
+Switched to branch 'henri-davroux'
+Your branch is ahead of 'origin/henri-davroux' by 1 commit.
+
+git merge feature/display-observation-dates
+Updating 0dc7da0..6568fac
+Fast-forward
+ src/main.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+python src/main.py
+=== MarketPulse ===
+
+Market configuration
+Period   : 1 month
+Interval : Daily
+
+Instrument
+AAPL - Apple Inc.
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 250.00 USD
+Last close   : 266.20 USD
+
+Benchmark
+SP500 - S&P 500
+Observations : 21
+First date   : 2026-09-01
+Last date    : 2026-09-30
+First close  : 6600.00
+Last close   : 6742.00
+
+git branch
+  feature/display-observation-dates
+* henri-davroux
+  main
+
+git branch --merged
+  feature/display-observation-dates
+* henri-davroux
+
+git log --oneline --graph --decorate -6
+* 6568fac (HEAD -> henri-davroux, feature/display-observation-dates) feat: display first and last observation dates
+* 0dc7da0 refactor: reuse market summary display
+* f14aed7 (origin/henri-davroux) Rename rendus_tp_indiv to TD3
+* 131c9b3 Update TD3
+* 279c9d8 Create rendus_tp_indiv
+* 6f72f39 Add files via upload
+
+git branch -d feature/display-observation-dates
+Deleted branch feature/display-observation-dates (was 6568fac).
