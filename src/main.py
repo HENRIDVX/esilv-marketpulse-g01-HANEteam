@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import csv
 import json
@@ -22,6 +21,7 @@ from providers.bloomberg_provider import (
 
 DATA_DIR = Path("data/sample")
 
+# These starter values mirror config/settings.yml.
 LOOKBACK_LABEL = "1 month"
 INTERVAL_LABEL = "Daily"
 
@@ -42,13 +42,6 @@ def load_prices():
         return list(csv.DictReader(file))
 
 
-def filter_prices(prices, ticker):
-    return [
-        row for row in prices
-        if row["ticker"] == ticker
-    ]
-
-
 def normalize_price_row(row):
     return {
         "date": row["date"],
@@ -59,6 +52,13 @@ def normalize_price_row(row):
         "close": float(row["close"]),
         "volume": int(row["volume"]),
     }
+
+
+def filter_prices(prices, ticker):
+    return [
+        row for row in prices
+        if row["ticker"] == ticker
+    ]
 
 
 def build_market_snapshot():
@@ -193,7 +193,6 @@ def main():
         f"{instrument_base_100[0]['value']:.2f} -> "
         f"{instrument_base_100[-1]['value']:.2f}"
     )
-
     print(
         f"{benchmark['ticker']}: "
         f"{benchmark_base_100[0]['value']:.2f} -> "
@@ -204,16 +203,8 @@ def main():
     print("Observations")
     print(f"{instrument['ticker']}: {len(instrument_prices)}")
     print(f"{benchmark['ticker']}: {len(benchmark_prices)}")
-
-    print(
-        f"First common date: "
-        f"{instrument_prices[0]['date']}"
-    )
-
-    print(
-        f"Last common date: "
-        f"{instrument_prices[-1]['date']}"
-    )
+    print(f"First common date: {instrument_prices[0]['date']}")
+    print(f"Last common date: {instrument_prices[-1]['date']}")
     print()
 
     print("Bloomberg sample market data")
