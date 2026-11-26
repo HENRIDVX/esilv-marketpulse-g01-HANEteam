@@ -1,0 +1,89 @@
+from dash import Dash, dcc, html
+import plotly.graph_objects as go
+
+from main import build_market_snapshot
+
+
+snapshot = build_market_snapshot()
+
+provider = snapshot["provider"]
+access_mode = snapshot["access_mode"]
+lookback = snapshot["lookback"]
+interval = snapshot["interval"]
+
+instrument = snapshot["instrument"]
+benchmark = snapshot["benchmark"]
+
+instrument_return = snapshot["instrument_return"]
+benchmark_return = snapshot["benchmark_return"]
+relative_performance = snapshot["relative_performance"]
+
+instrument_base_100 = snapshot["instrument_base_100"]
+benchmark_base_100 = snapshot["benchmark_base_100"]
+
+
+def indicator(title, value):
+    return html.Div(
+        [html.H3(title), html.P(value)],
+        style={"flex": "1", "padding": "8px 16px", "border": "1px solid #ddd"},
+    )
+
+
+context = html.Div(
+    [
+        html.P(f"Provider: {provider} - {access_mode}"),
+        html.P(f"Instrument: {instrument['ticker']} - {instrument['name']}"),
+        html.P(f"Benchmark: {benchmark['ticker']} - {benchmark['name']}"),
+        html.P(f"Lookback: {lookback}"),
+        html.P(f"Interval: {interval}"),
+    ]
+)
+
+performance = html.Div(
+    [
+        indicator("Instrument Return", f"{instrument_return:+.2f}%"),
+        indicator("Benchmark Return", f"{benchmark_return:+.2f}%"),
+        indicator("Relative Performance", f"{relative_performance:+.2f} pts"),
+    ],
+    style={"display": "flex", "gap": "12px"},
+)
+
+figure = go.Figure()
+figure.add_trace(
+    go.Scatter(
+        x=[row["date"] for row in instrument_base_100],
+        y=[row["value"] for row in instrument_base_100],
+        mode="lines",
+        name=instrument["ticker"],
+    )
+)
+figure.add_trace(
+    go.Scatter(
+        x=[row["date"] for row in benchmark_base_100],
+        y=[row["value"] for row in benchmark_base_100],
+        mode="lines",
+        name=benchmark["ticker"],
+    )
+)
+figure.update_layout(
+    title="Instrument vs Benchmark - Base 100",
+    xaxis_title="Date",
+    yaxis_title="Base 100",
+)
+
+app = Dash(__name__)
+
+app.layout = html.Div(
+    [
+        html.H1("MarketPulse"),
+        context,
+        performance,
+        dcc.Graph(figure=figure),
+    ],
+    style={"fontFamily": "Arial, sans-serif", "padding": "16px"},
+)
+
+
+if __name__ == "__main__":
+    app.run(debug=False)
+    
