@@ -15,6 +15,11 @@ from providers.yahoo_provider import (
     YAHOO_SYMBOLS,
 )
 
+from providers.bloomberg_provider import (
+    fetch_bloomberg_prices,
+    ACCESS_MODE,
+)
+
 DATA_DIR = Path("data/sample")
 
 LOOKBACK_LABEL = "1 month"
@@ -22,17 +27,26 @@ INTERVAL_LABEL = "Daily"
 
 
 def load_instruments():
-    with open(DATA_DIR / "instruments.json", encoding="utf-8") as file:
+    with open(
+        DATA_DIR / "instruments.json",
+        encoding="utf-8",
+    ) as file:
         return json.load(file)
 
 
 def load_prices():
-    with open(DATA_DIR / "prices.csv", encoding="utf-8") as file:
+    with open(
+        DATA_DIR / "prices.csv",
+        encoding="utf-8",
+    ) as file:
         return list(csv.DictReader(file))
 
 
 def filter_prices(prices, ticker):
-    return [row for row in prices if row["ticker"] == ticker]
+    return [
+        row for row in prices
+        if row["ticker"] == ticker
+    ]
 
 
 def normalize_price_row(row):
@@ -47,25 +61,19 @@ def normalize_price_row(row):
     }
 
 
-def main():
+def build_market_snapshot():
     instruments = load_instruments()
 
     instrument = instruments["instrument"]
     benchmark = instruments["benchmark"]
 
-    # Retrieve Yahoo Finance data
-    instrument_prices = fetch_yahoo_prices(
-        symbol=YAHOO_SYMBOLS[instrument["ticker"]],
-        canonical_ticker=instrument["ticker"],
-        period="1mo",
-        interval="1d",
+    # Bloomberg data acquisition
+    instrument_prices = fetch_bloomberg_prices(
+        instrument["ticker"]
     )
 
-    benchmark_prices = fetch_yahoo_prices(
-        symbol=YAHOO_SYMBOLS[benchmark["ticker"]],
-        canonical_ticker=benchmark["ticker"],
-        period="1mo",
-        interval="1d",
+    benchmark_prices = fetch_bloomberg_prices(
+        benchmark["ticker"]
     )
 
     # Align common dates
@@ -77,7 +85,7 @@ def main():
     if not aligned_instrument or not aligned_benchmark:
         raise ValueError("No common dates found")
 
-    # Calculate period returns
+    # Period returns
     instrument_return = calculate_period_return(
         aligned_instrument
     )
@@ -86,13 +94,13 @@ def main():
         aligned_benchmark
     )
 
-    # Calculate relative performance
+    # Relative performance
     relative_performance = calculate_relative_performance(
         instrument_return,
         benchmark_return,
     )
 
-    # Calculate base 100
+    # Base 100
     instrument_base_100 = calculate_base_100(
         aligned_instrument
     )
@@ -101,38 +109,81 @@ def main():
         aligned_benchmark
     )
 
-    instrument_latest = aligned_instrument[-1]
-    benchmark_latest = aligned_benchmark[-1]
+    # Shared application snapshot
+    return {
+        "provider": f"Bloomberg stage - {ACCESS_MODE}",
+        "access_mode": ACCESS_MODE,
+        "lookback": LOOKBACK_LABEL,
+        "interval": INTERVAL_LABEL,
+        "instrument": instrument,
+        "benchmark": benchmark,
+        "instrument_return": instrument_return,
+        "benchmark_return": benchmark_return,
+        "relative_performance": relative_performance,
+        "instrument_base_100": instrument_base_100,
+        "benchmark_base_100": benchmark_base_100,
+        "instrument_prices": aligned_instrument,
+        "benchmark_prices": aligned_benchmark,
+    }
 
-    # Display results
+
+def main():
+    snapshot = build_market_snapshot()
+
+    instrument = snapshot["instrument"]
+    benchmark = snapshot["benchmark"]
+
+    instrument_prices = snapshot["instrument_prices"]
+    benchmark_prices = snapshot["benchmark_prices"]
+
+    instrument_latest = instrument_prices[-1]
+    benchmark_latest = benchmark_prices[-1]
+
+    instrument_base_100 = snapshot["instrument_base_100"]
+    benchmark_base_100 = snapshot["benchmark_base_100"]
+
     print("=== MarketPulse ===")
     print()
 
     print("Provider")
-    print("Yahoo Finance via yfinance")
+    print(snapshot["provider"])
+    print()
+
+    print("Access mode")
+    print(snapshot["access_mode"])
     print()
 
     print("Market configuration")
-    print(f"Period: {LOOKBACK_LABEL}")
-    print(f"Interval: {INTERVAL_LABEL}")
+    print(f"Period: {snapshot['lookback']}")
+    print(f"Interval: {snapshot['interval']}")
     print()
 
     print("Instrument")
     print(f"{instrument['ticker']} - {instrument['name']}")
-    print(f"Last price: {instrument_latest['close']:.2f} {instrument['currency']}")
-    print(f"Period return: {instrument_return:.2f}%")
+    print(
+        f"Last price: {instrument_latest['close']:.2f}"
+        f" {instrument['currency']}"
+    )
+    print(
+        f"Period return: "
+        f"{snapshot['instrument_return']:.2f}%"
+    )
     print()
 
     print("Benchmark")
     print(f"{benchmark['ticker']} - {benchmark['name']}")
     print(f"Last level: {benchmark_latest['close']:.2f}")
-    print(f"Period return: {benchmark_return:.2f}%")
+    print(
+        f"Period return: "
+        f"{snapshot['benchmark_return']:.2f}%"
+    )
     print()
 
     print("Relative performance")
     print(
         f"{instrument['ticker']} vs {benchmark['ticker']}: "
-        f"{relative_performance:+.2f} percentage points"
+        f"{snapshot['relative_performance']:+.2f}"
+        f" percentage points"
     )
     print()
 
@@ -151,13 +202,21 @@ def main():
     print()
 
     print("Observations")
-    print(f"{instrument['ticker']}: {len(aligned_instrument)}")
-    print(f"{benchmark['ticker']}: {len(aligned_benchmark)}")
-    print(f"First common date: {aligned_instrument[0]['date']}")
-    print(f"Last common date: {aligned_instrument[-1]['date']}")
+    print(f"{instrument['ticker']}: {len(instrument_prices)}")
+    print(f"{benchmark['ticker']}: {len(benchmark_prices)}")
+
+    print(
+        f"First common date: "
+        f"{instrument_prices[0]['date']}"
+    )
+
+    print(
+        f"Last common date: "
+        f"{instrument_prices[-1]['date']}"
+    )
     print()
 
-    print("Yahoo market data")
+    print("Bloomberg sample market data")
     print(instrument_latest)
     print(benchmark_latest)
 
