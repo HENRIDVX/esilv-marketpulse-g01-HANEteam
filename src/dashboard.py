@@ -1,4 +1,3 @@
-
 from dash import Dash, dcc, html
 import plotly.graph_objects as go
 
@@ -47,22 +46,25 @@ context = html.Div([
 
 
 # Performance indicators
-performance = html.Div([
-    html.Div([
-        html.H3("Instrument Return"),
-        html.P(f"{instrument_return:+.2f}%"),
-    ]),
+performance = html.Div(
+    [
+        html.Div([
+            html.H3("Instrument Return"),
+            html.P(f"{instrument_return:+.2f}%"),
+        ]),
 
-    html.Div([
-        html.H3("Benchmark Return"),
-        html.P(f"{benchmark_return:+.2f}%"),
-    ]),
+        html.Div([
+            html.H3("Benchmark Return"),
+            html.P(f"{benchmark_return:+.2f}%"),
+        ]),
 
-    html.Div([
-        html.H3("Relative Performance"),
-        html.P(f"{relative_performance:+.2f} pts"),
-    ]),
-])
+        html.Div([
+            html.H3("Relative Performance"),
+            html.P(f"{relative_performance:+.2f} pts"),
+        ]),
+    ],
+    style={"display": "flex", "gap": "40px"},
+)
 
 
 # Base 100 comparison chart
@@ -109,13 +111,13 @@ figure.update_layout(
 # Dashboard layout
 app.layout = html.Div([
     html.H1("MarketPulse"),
+    html.P("Instrument vs Benchmark market comparison, base 100"),
     context,
     performance,
     dcc.Graph(figure=figure),
 ])
 
 
-# Run dashboard
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
