@@ -1,5 +1,5 @@
-from pathlib import Path
 import json
+from pathlib import Path
 
 from analytics import (
     align_series,
@@ -12,7 +12,6 @@ from providers.bloomberg_provider import (
     BLOOMBERG_IDENTIFIERS,
     fetch_bloomberg_prices,
 )
-
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "sample"

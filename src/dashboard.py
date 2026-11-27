@@ -1,8 +1,7 @@
-from dash import Dash, dcc, html
 import plotly.graph_objects as go
+from dash import Dash, dcc, html
 
 from main import build_market_snapshot
-
 
 snapshot = build_market_snapshot()
 
@@ -86,4 +85,3 @@ app.layout = html.Div(
 
 if __name__ == "__main__":
     app.run(debug=False)
-    
