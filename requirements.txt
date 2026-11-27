@@ -4,4 +4,3 @@
 yfinance
 dash
 plotly
-plotly
