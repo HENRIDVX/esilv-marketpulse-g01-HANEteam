@@ -6,7 +6,7 @@ app:
   name: MarketPulse
 
 market:
-  provider: csv
+  provider: bloomberg_stage   # access mode: APPROVED_SAMPLE
   lookback: 1mo
   interval: 1d
 

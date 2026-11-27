@@ -8,7 +8,8 @@ import json
 from pathlib import Path
 
 
-DATA_DIR = Path("data/sample")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DATA_DIR = PROJECT_ROOT / "data" / "sample"
 SAMPLE_FILE = DATA_DIR / "bloomberg_reference_sample.json"
 
 ACCESS_MODE = "APPROVED_SAMPLE"

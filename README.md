@@ -475,3 +475,32 @@ This README intentionally does not display CI, security, release or license badg
 **Course:** MESIFI472326 - Python, Git, Linux  
 **School:** ESILV - A4  
 **Use case:** MarketPulse - Multi-Source Financial Market Data Dashboard
+
+## HANEteam (G01) - Final release
+
+| | |
+|---|---|
+| Instrument | AAPL - Apple Inc. |
+| Benchmark | S&P 500 (SP500) |
+| Provider | Bloomberg stage - APPROVED_SAMPLE |
+| Lookback | 1 month |
+| Interval | Daily |
+
+The final run uses the approved Bloomberg sample (`data/sample/bloomberg_reference_sample.json`).
+No live Bloomberg session is used. A Yahoo Finance provider (`src/providers/yahoo_provider.py`) is also available but needs internet access.
+
+### Install and run
+
+```bash
+git clone https://github.com/HENRIDVX/esilv-marketpulse-g01-HANEteam.git
+cd esilv-marketpulse-g01-HANEteam
+python -m pip install -r requirements.txt
+python src/main.py
+python src/dashboard.py
+```
+
+The dashboard opens on port 8050 (in Codespaces: Ports tab, port 8050).
+
+Environment: Python 3, tested in GitHub Codespaces.
+
+Evidence: `evidence/`. TD reports (PDF): `rendu-TD/` on team main.
