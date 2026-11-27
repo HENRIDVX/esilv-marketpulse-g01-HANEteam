@@ -34,11 +34,13 @@ def calculate_base_100(prices):
     result = []
 
     for row in prices:
-        result.append({
-            "date": row["date"],
-            "ticker": row["ticker"],
-            "value": row["close"] / first_close * 100,
-        })
+        result.append(
+            {
+                "date": row["date"],
+                "ticker": row["ticker"],
+                "value": row["close"] / first_close * 100,
+            }
+        )
 
     return result
 

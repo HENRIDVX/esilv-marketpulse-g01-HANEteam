@@ -7,7 +7,6 @@ The raw input is the approved fallback fixture, not a live Bloomberg session.
 import json
 from pathlib import Path
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data" / "sample"
 SAMPLE_FILE = DATA_DIR / "bloomberg_reference_sample.json"
@@ -35,15 +34,17 @@ def normalize_bloomberg_history(raw_data, canonical_ticker):
     rows = []
 
     for observation in raw_data["observations"]:
-        rows.append({
-            "date": observation["observation_date"],
-            "ticker": canonical_ticker,
-            "open": float(observation["open_value"]),
-            "high": float(observation["high_value"]),
-            "low": float(observation["low_value"]),
-            "close": float(observation["close_value"]),
-            "volume": int(observation["volume_value"]),
-        })
+        rows.append(
+            {
+                "date": observation["observation_date"],
+                "ticker": canonical_ticker,
+                "open": float(observation["open_value"]),
+                "high": float(observation["high_value"]),
+                "low": float(observation["low_value"]),
+                "close": float(observation["close_value"]),
+                "volume": int(observation["volume_value"]),
+            }
+        )
 
     return rows
 
