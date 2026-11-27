@@ -1,7 +1,5 @@
 # MarketPulse Team
 
-Copy this file to `TEAM.md` in your team repository and complete it before starting collaborative work.
-
 ## Course
 
 - Module: MESIFI472326 - Python, Git, Linux
@@ -13,10 +11,9 @@ Copy this file to `TEAM.md` in your team repository and complete it before start
 | Full name | GitHub username |
 |---|---|
 | DAVROUX Henri | @HENRIDVX |
-| Student 2 | @github-user-2 |
-| Student 3 | @github-user-3 |
-
-Add a fourth row only if your team has four members.
+| BOUZGUENDA Adli | @adlib1805-blip |
+| BEJJANI Elias | @eliasbejj |
+| PIQUET Nicolas | @NicolasPiquet |
 
 ## Repository
 
