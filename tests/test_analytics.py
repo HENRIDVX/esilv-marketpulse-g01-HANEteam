@@ -23,7 +23,7 @@ def test_base_100_starts_at_100():
 
 
 def test_relative_performance():
-    assert round(calculate_relative_performance(6.48, 2.15), 2) == 5.00
+    assert round(calculate_relative_performance(6.48, 2.15), 2) == 4.33
 
 
 def test_align_series_keeps_common_dates():
